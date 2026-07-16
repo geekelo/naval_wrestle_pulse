@@ -1,0 +1,180 @@
+/* ===== Sidebar (decoupled, self-contained) ===== */
+.nwp-sidebar {
+  --sb-navy-800: #0a1e42;
+  --sb-navy-900: #071634;
+  --sb-blue: #1e50c8;
+  --sb-text: #aab6c8;
+  --sb-text-active: #ffffff;
+
+  width: 250px;
+  flex-shrink: 0;
+  align-self: stretch;
+  background: linear-gradient(180deg, var(--sb-navy-800), var(--sb-navy-900));
+  color: #cbd5e1;
+  display: flex;
+  flex-direction: column;
+  padding: 22px 16px;
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  z-index: 40;
+}
+
+.nwp-sidebar * {
+  box-sizing: border-box;
+}
+
+/* Brand */
+.nwp-brand {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 4px 8px 22px;
+  text-align: center;
+}
+
+.nwp-logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+}
+
+.nwp-brand-mark {
+  width: 52px;
+  height: 58px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+.nwp-brand-text {
+  font-weight: 800;
+  font-size: 13px;
+  line-height: 1.25;
+  letter-spacing: 0.4px;
+  color: #fff;
+}
+
+.nwp-close {
+  display: none;
+  position: absolute;
+  top: 0;
+  right: 0;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #cbd5e1;
+  cursor: pointer;
+}
+
+.nwp-close svg {
+  width: 22px;
+  height: 22px;
+}
+
+.nwp-close:hover {
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+}
+
+/* Nav */
+.nwp-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.nwp-nav a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 11px 14px;
+  border-radius: 9px;
+  background: transparent;
+  color: var(--sb-text);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.nwp-nav a svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.nwp-nav a:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #e2e8f0;
+}
+
+.nwp-nav a.active {
+  background: var(--sb-blue);
+  color: var(--sb-text-active);
+  box-shadow: 0 6px 16px rgba(30, 80, 200, 0.35);
+}
+
+/* Help card */
+.nwp-help {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nwp-help svg {
+  width: 26px;
+  height: 26px;
+  color: #7aa2ff;
+  flex-shrink: 0;
+}
+
+.nwp-help-title {
+  font-size: 13px;
+  color: #e2e8f0;
+  font-weight: 600;
+}
+
+.nwp-help-link {
+  font-size: 12px;
+  color: #7aa2ff;
+  text-decoration: none;
+}
+
+.nwp-help-link:hover {
+  text-decoration: underline;
+}
+
+/* Mobile drawer */
+@media (max-width: 860px) {
+  .nwp-sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    transform: translateX(-100%);
+    transition: transform 0.25s ease;
+    box-shadow: 0 0 40px rgba(0, 0, 0, 0.35);
+  }
+
+  .nwp-sidebar.open {
+    transform: translateX(0);
+  }
+
+  .nwp-close {
+    display: inline-flex;
+  }
+}
