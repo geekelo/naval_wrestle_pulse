@@ -4,7 +4,7 @@ import navyLogo from '../assets/nigerian-navy-logo.png'
 import eventLogo from '../assets/beach_wrestling_challenge_logo.png'
 import { icon } from '../icons.jsx'
 
-const EVENT_DATE = new Date('2026-07-23T00:00:00')
+const EVENT_DATE = new Date('2026-07-24T00:00:00')
 
 function getRemaining() {
   const total = EVENT_DATE.getTime() - Date.now()
@@ -58,7 +58,7 @@ function EventCountdown({ title = 'Home', subtitle = 'Countdown to the main even
       <div className="reg-body cd-body">
         <div className="cd">
           <img className="cd-logo" src={eventLogo} alt="Beach Wrestling Challenge" />
-          <span className="cd-badge">Countdown to Event · 23 July 2026</span>
+          <span className="cd-badge">Countdown to Event · 24 July 2026</span>
           <h2 className="cd-title">ARMED FORCES WRESTLING CHALLENGE 2026</h2>
 
           {time.total <= 0 ? (
