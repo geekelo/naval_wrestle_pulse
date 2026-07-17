@@ -1,5 +1,9 @@
 import { useState } from 'react'
 import { useNavigate, useOutletContext } from 'react-router-dom'
+import {
+  createGuestRegistration,
+  createTeamRegistration,
+} from '../api/registrations.js'
 import navyLogo from '../assets/nigerian-navy-logo.png'
 import eventLogo from '../assets/beach_wrestling_challenge_logo.png'
 import { icon } from '../icons.jsx'
@@ -20,22 +24,47 @@ const MALE_CATS = ['70kg', '80kg', '90kg', '+90kg']
 
 const STEPS = ['Select Type', 'Fill Details', 'Review & Submit']
 
+const emptyGuest = {
+  country: '', name: '', rank: '', org: '', appointment: '',
+  travel: 'air', accommodation: 'yes',
+}
+
+const emptyTeam = {
+  captain: '', org: '', male: 0, female: 0,
+  players: Array(10).fill(''),
+  femaleCats: [], maleCats: [],
+  travel: 'air', accommodation: 'yes',
+}
+
+function validateGuest(guest) {
+  if (!guest.country) return 'Country is required.'
+  if (!guest.name.trim()) return 'Full name is required.'
+  if (!guest.rank) return 'Rank / Title is required.'
+  if (!guest.org.trim()) return 'Organization / Unit is required.'
+  if (!guest.appointment.trim()) return 'Appointment / Position is required.'
+  return null
+}
+
+function validateTeam(team) {
+  if (!team.captain.trim()) return 'Team captain is required.'
+  if (!team.org.trim()) return 'Organization / Unit is required.'
+  if (team.male + team.female < 1) return 'Add at least one team member.'
+  if (team.players.some((p) => !p.trim())) return 'All 10 player names are required.'
+  if (team.femaleCats.length === 0 && team.maleCats.length === 0) {
+    return 'Select at least one competing category.'
+  }
+  return null
+}
+
 function Register() {
   const navigate = useNavigate()
   const { openNav } = useOutletContext()
   const [type, setType] = useState('guest') // 'guest' | 'team'
+  const [submitting, setSubmitting] = useState(false)
+  const [status, setStatus] = useState(null) // { type: 'ok' | 'err', message }
 
-  const [guest, setGuest] = useState({
-    country: '', name: '', rank: '', org: '', appointment: '',
-    travel: 'air', accommodation: 'yes',
-  })
-
-  const [team, setTeam] = useState({
-    captain: '', org: '', male: 0, female: 0,
-    players: Array(10).fill(''),
-    femaleCats: [], maleCats: [],
-    travel: 'air', accommodation: 'yes',
-  })
+  const [guest, setGuest] = useState(emptyGuest)
+  const [team, setTeam] = useState(emptyTeam)
 
   const setG = (k, v) => setGuest((p) => ({ ...p, [k]: v }))
   const setT = (k, v) => setTeam((p) => ({ ...p, [k]: v }))
@@ -58,9 +87,36 @@ function Register() {
       return { ...p, [key]: list }
     })
 
-  const handleNext = () => {
-    // Hook up real submission / step navigation here.
-    console.log(type === 'guest' ? guest : team)
+  const handleSubmit = async () => {
+    setStatus(null)
+
+    const error = type === 'guest' ? validateGuest(guest) : validateTeam(team)
+    if (error) {
+      setStatus({ type: 'err', message: error })
+      return
+    }
+
+    setSubmitting(true)
+    try {
+      if (type === 'guest') {
+        await createGuestRegistration(guest)
+        setGuest(emptyGuest)
+      } else {
+        await createTeamRegistration(team)
+        setTeam(emptyTeam)
+      }
+      setStatus({
+        type: 'ok',
+        message: 'Registration submitted successfully.',
+      })
+    } catch (err) {
+      setStatus({
+        type: 'err',
+        message: err.message || 'Unable to submit registration. Please try again.',
+      })
+    } finally {
+      setSubmitting(false)
+    }
   }
 
   return (
@@ -105,14 +161,20 @@ function Register() {
             <button
               type="button"
               className={`reg-type-btn${type === 'guest' ? ' active' : ''}`}
-              onClick={() => setType('guest')}
+              onClick={() => {
+                setType('guest')
+                setStatus(null)
+              }}
             >
               {icon.group} Guests &amp; Officials
             </button>
             <button
               type="button"
               className={`reg-type-btn${type === 'team' ? ' active' : ''}`}
-              onClick={() => setType('team')}
+              onClick={() => {
+                setType('team')
+                setStatus(null)
+              }}
             >
               {icon.teams} Team Registration
             </button>
@@ -334,12 +396,24 @@ function Register() {
         </div>
 
         <footer className="reg-footer">
-          <button className="reg-btn ghost" type="button" onClick={() => navigate('/')}>
-            {icon.x} Cancel
-          </button>
-          <button className="reg-btn primary" type="button" onClick={handleNext}>
-            Submit {icon.arrow}
-          </button>
+          {status && (
+            <p className={`reg-status ${status.type === 'ok' ? 'ok' : 'err'}`}>
+              {status.message}
+            </p>
+          )}
+          <div className="reg-footer-actions">
+            <button className="reg-btn ghost" type="button" onClick={() => navigate('/')}>
+              {icon.x} Cancel
+            </button>
+            <button
+              className="reg-btn primary"
+              type="button"
+              onClick={handleSubmit}
+              disabled={submitting}
+            >
+              {submitting ? 'Submitting…' : 'Submit'} {icon.arrow}
+            </button>
+          </div>
         </footer>
     </div>
   )
