@@ -15,7 +15,7 @@ const router = createBrowserRouter([
     path: '/',
     element: <DashboardLayout />,
     children: [
-      { index: true, element: countdown('Home', 'Countdown to the main event') },
+      { index: true, element: <Register /> },
       { path: 'register', element: <Register /> },
       { path: 'dashboard', element: countdown('Dashboard', 'Overview & event countdown') },
       { path: 'matches', element: countdown('Matches', 'Fixtures coming soon') },
