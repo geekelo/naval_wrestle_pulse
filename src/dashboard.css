@@ -680,6 +680,60 @@
   font-size: 14px;
 }
 
+/* ---------- Registrations list ---------- */
+.regs-card {
+  max-width: none;
+}
+
+.regs-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+}
+
+.regs-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13px;
+  text-align: left;
+}
+
+.regs-table th,
+.regs-table td {
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+.regs-table th {
+  background: #f8fafc;
+  color: var(--muted);
+  font-size: 11.5px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.regs-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.regs-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.regs-table .caps {
+  text-transform: capitalize;
+}
+
+.regs-cats {
+  white-space: normal;
+  max-width: 220px;
+  display: inline-block;
+  color: var(--ink);
+}
+
 .reg-scrim {
   display: none;
 }

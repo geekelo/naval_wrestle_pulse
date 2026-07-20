@@ -5,6 +5,7 @@ import './index.css'
 import { AuthProvider } from './auth/AuthContext.jsx'
 import DashboardLayout from './layouts/DashboardLayout.jsx'
 import Register from './pages/Register.jsx'
+import Registrations from './pages/Registrations.jsx'
 import Login from './pages/Login.jsx'
 import EventCountdown from './pages/EventCountdown.jsx'
 
@@ -19,6 +20,8 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <Register /> },
       { path: 'register', element: <Register /> },
+      { path: 'registrations', element: <Registrations /> },
+      { path: 'registerations', element: <Registrations /> },
       { path: 'login', element: <Login /> },
       { path: 'dashboard', element: countdown('Dashboard', 'Overview & event countdown') },
       { path: 'matches', element: countdown('Matches', 'Fixtures coming soon') },
@@ -27,7 +30,6 @@ const router = createBrowserRouter([
       { path: 'schedule', element: countdown('Schedule', 'Full schedule coming soon') },
       { path: 'officials', element: countdown('Officials', 'Officials coming soon') },
       { path: 'messages', element: countdown('Messages', 'Messages coming soon') },
-      { path: 'settings', element: countdown('Settings', 'Settings coming soon') },
     ],
   },
 ])
