@@ -1,22 +1,45 @@
-import { NavLink } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { useAuth } from '../auth/AuthContext.jsx'
 import navyLogo from '../assets/nigerian-navy-logo.png'
 import eventLogo from '../assets/beach_wrestling_challenge_logo.png'
 import { icon } from '../icons.jsx'
 import './Sidebar.css'
 
 const NAV = [
-  { label: 'Registration', to: '/register', ic: icon.registration },
+  { label: 'Register', to: '/register', ic: icon.registration },
+  { label: 'Registrations', to: '/registerations', ic: icon.registration },
   { label: 'Dashboard', to: '/dashboard', ic: icon.dashboard },
   { label: 'Matches', to: '/matches', ic: icon.matches },
   { label: 'Teams', to: '/teams', ic: icon.teams },
   { label: 'Leaderboard', to: '/leaderboard', ic: icon.leaderboard },
   { label: 'Schedule', to: '/schedule', ic: icon.schedule },
   { label: 'Officials', to: '/officials', ic: icon.officials },
-  { label: 'Messages', to: '/messages', ic: icon.messages },
   { label: 'Settings', to: '/settings', ic: icon.settings },
 ]
 
+function userInitials(user) {
+  const name = user?.name || user?.full_name || user?.email || '?'
+  if (user?.email && !user?.name && !user?.full_name) {
+    return user.email.slice(0, 1).toUpperCase()
+  }
+  return name
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0]?.toUpperCase() || '')
+    .join('') || '?'
+}
+
 function Sidebar({ open = false, onNavigate }) {
+  const navigate = useNavigate()
+  const { isAuthenticated, user, logout } = useAuth()
+
+  const handleLogout = () => {
+    logout()
+    onNavigate?.()
+    navigate('/login')
+  }
+
   return (
     <aside className={`nwp-sidebar${open ? ' open' : ''}`}>
       <div className="nwp-brand">
@@ -48,6 +71,39 @@ function Sidebar({ open = false, onNavigate }) {
           </NavLink>
         ))}
       </nav>
+
+      <div className="nwp-account">
+        {isAuthenticated ? (
+          <>
+            <div className="nwp-account-user">
+              <span className="nwp-avatar" aria-hidden="true">
+                {userInitials(user)}
+              </span>
+              <div className="nwp-account-meta">
+                <div className="nwp-account-label">Signed in</div>
+                <div className="nwp-account-email">
+                  {user?.email || user?.name || 'Admin'}
+                </div>
+              </div>
+            </div>
+            <button className="nwp-account-btn" type="button" onClick={handleLogout}>
+              {icon.logout}
+              Logout
+            </button>
+          </>
+        ) : (
+          <NavLink
+            to="/login"
+            className={({ isActive }) => `nwp-account-btn${isActive ? ' active' : ''}`}
+            onClick={onNavigate}
+          >
+            <span className="nwp-avatar placeholder" aria-hidden="true">
+              {icon.user}
+            </span>
+            Login
+          </NavLink>
+        )}
+      </div>
 
       <div className="nwp-help">
         {icon.help}
