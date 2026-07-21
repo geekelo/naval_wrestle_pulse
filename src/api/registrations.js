@@ -2,7 +2,7 @@ import { apiGet, apiPost } from './client.js'
 import { getStoredToken } from './auth.js'
 
 export function createGuestRegistration(guest) {
-  return apiPost('/guest_registrations', {
+  return apiPost('/api/v1/guest_registrations', {
     guest_registration: {
       country: guest.country,
       full_name: guest.name,
@@ -20,7 +20,7 @@ export function createTeamRegistration(team) {
     team.players.map((name, i) => [`player_${i + 1}`, name.trim()]),
   )
 
-  return apiPost('/team_registrations', {
+  return apiPost('/api/v1/team_registrations', {
     team_registration: {
       team_captain: team.captain,
       organization_unit: team.org,
