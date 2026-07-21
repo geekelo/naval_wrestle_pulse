@@ -1,12 +1,6 @@
 const API_BASE = 'https://naval-wrestle-pulse-api.onrender.com'
 
-export async function apiPost(path, body) {
-  const response = await fetch(`${API_BASE}${path}`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  })
-
+async function parseResponse(response) {
   let data = null
   const text = await response.text()
   if (text) {
@@ -27,4 +21,27 @@ export async function apiPost(path, body) {
   }
 
   return data
+}
+
+function authHeaders(token) {
+  const headers = { 'Content-Type': 'application/json' }
+  if (token) headers.Authorization = `Bearer ${token}`
+  return headers
+}
+
+export async function apiPost(path, body, { token } = {}) {
+  const response = await fetch(`${API_BASE}${path}`, {
+    method: 'POST',
+    headers: authHeaders(token),
+    body: JSON.stringify(body),
+  })
+  return parseResponse(response)
+}
+
+export async function apiGet(path, { token } = {}) {
+  const response = await fetch(`${API_BASE}${path}`, {
+    method: 'GET',
+    headers: authHeaders(token),
+  })
+  return parseResponse(response)
 }

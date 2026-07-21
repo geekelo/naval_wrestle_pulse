@@ -1,13 +1,15 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext.jsx'
 import LoginForm from '../components/LoginForm.jsx'
-import { DEMO_GUESTS, DEMO_TEAMS } from '../data/demoRegistrations.js'
+import { fetchGuestRegistrations } from '../api/registrations.js'
+import { DEMO_TEAMS } from '../data/demoRegistrations.js'
 import navyLogo from '../assets/nigerian-navy-logo.png'
 import eventLogo from '../assets/beach_wrestling_challenge_logo.png'
 import { icon } from '../icons.jsx'
 
 function formatDate(value) {
+  if (!value) return '—'
   try {
     return new Date(value).toLocaleDateString(undefined, {
       year: 'numeric',
@@ -20,13 +22,50 @@ function formatDate(value) {
 }
 
 function yesNo(value) {
-  return value ? 'Yes' : 'No'
+  if (value === true || value === 'yes' || value === 'true') return 'Yes'
+  if (value === false || value === 'no' || value === 'false') return 'No'
+  return value == null ? '—' : String(value)
 }
 
 function Registrations() {
   const { openNav } = useOutletContext()
   const { isAuthenticated } = useAuth()
   const [tab, setTab] = useState('guest') // 'guest' | 'team'
+
+  const [guests, setGuests] = useState([])
+  const [loadingGuests, setLoadingGuests] = useState(false)
+  const [guestError, setGuestError] = useState(null)
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setGuests([])
+      setGuestError(null)
+      return
+    }
+
+    let cancelled = false
+
+    async function loadGuests() {
+      setLoadingGuests(true)
+      setGuestError(null)
+      try {
+        const list = await fetchGuestRegistrations()
+        if (!cancelled) setGuests(list)
+      } catch (err) {
+        if (!cancelled) {
+          setGuests([])
+          setGuestError(err.message || 'Unable to load guest registrations.')
+        }
+      } finally {
+        if (!cancelled) setLoadingGuests(false)
+      }
+    }
+
+    loadGuests()
+    return () => {
+      cancelled = true
+    }
+  }, [isAuthenticated])
 
   return (
     <div className="reg-main">
@@ -69,7 +108,7 @@ function Registrations() {
                 className={`reg-type-btn${tab === 'guest' ? ' active' : ''}`}
                 onClick={() => setTab('guest')}
               >
-                {icon.group} Guests ({DEMO_GUESTS.length})
+                {icon.group} Guests ({loadingGuests ? '…' : guests.length})
               </button>
               <button
                 type="button"
@@ -87,41 +126,52 @@ function Registrations() {
                     <span className="reg-card-icon blue">{icon.user}</span>
                     <div>
                       <h2>GUEST REGISTRATIONS</h2>
-                      <p>Demo guest &amp; officials list</p>
+                      <p>Live guest &amp; officials list</p>
                     </div>
                   </div>
-                  <div className="regs-table-wrap">
-                    <table className="regs-table">
-                      <thead>
-                        <tr>
-                          <th>#</th>
-                          <th>Name</th>
-                          <th>Country</th>
-                          <th>Rank / Title</th>
-                          <th>Organization</th>
-                          <th>Appointment</th>
-                          <th>Travel</th>
-                          <th>Stay</th>
-                          <th>Date</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {DEMO_GUESTS.map((g) => (
-                          <tr key={g.id}>
-                            <td>{g.id}</td>
-                            <td>{g.full_name}</td>
-                            <td>{g.country}</td>
-                            <td>{g.rank_title}</td>
-                            <td>{g.organization_unit}</td>
-                            <td>{g.appointment}</td>
-                            <td className="caps">{g.travel_mode}</td>
-                            <td>{yesNo(g.accommodation)}</td>
-                            <td>{formatDate(g.created_at)}</td>
+
+                  {guestError && (
+                    <p className="reg-status err">{guestError}</p>
+                  )}
+
+                  {loadingGuests ? (
+                    <p className="regs-empty">Loading guest registrations…</p>
+                  ) : guests.length === 0 && !guestError ? (
+                    <p className="regs-empty">No guest registrations yet.</p>
+                  ) : guests.length > 0 ? (
+                    <div className="regs-table-wrap">
+                      <table className="regs-table">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Name</th>
+                            <th>Country</th>
+                            <th>Rank / Title</th>
+                            <th>Organization</th>
+                            <th>Appointment</th>
+                            <th>Travel</th>
+                            <th>Stay</th>
+                            <th>Date</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                        </thead>
+                        <tbody>
+                          {guests.map((g, index) => (
+                            <tr key={g.id ?? `${g.full_name}-${index}`}>
+                              <td>{g.id ?? index + 1}</td>
+                              <td>{g.full_name || '—'}</td>
+                              <td>{g.country || '—'}</td>
+                              <td>{g.rank_title || '—'}</td>
+                              <td>{g.organization_unit || '—'}</td>
+                              <td>{g.appointment || '—'}</td>
+                              <td className="caps">{g.travel_mode || '—'}</td>
+                              <td>{yesNo(g.accommodation)}</td>
+                              <td>{formatDate(g.created_at)}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : null}
                 </>
               ) : (
                 <>

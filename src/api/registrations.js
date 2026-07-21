@@ -1,4 +1,5 @@
-import { apiPost } from './client.js'
+import { apiGet, apiPost } from './client.js'
+import { getStoredToken } from './auth.js'
 
 export function createGuestRegistration(guest) {
   return apiPost('/guest_registrations', {
@@ -33,4 +34,20 @@ export function createTeamRegistration(team) {
       accommodation: team.accommodation === 'yes',
     },
   })
+}
+
+function normalizeList(data, keys = []) {
+  if (Array.isArray(data)) return data
+  for (const key of keys) {
+    if (Array.isArray(data?.[key])) return data[key]
+  }
+  if (Array.isArray(data?.data)) return data.data
+  return []
+}
+
+export async function fetchGuestRegistrations() {
+  const data = await apiGet('/api/v1/guest_registrations', {
+    token: getStoredToken(),
+  })
+  return normalizeList(data, ['guest_registrations', 'guests'])
 }
