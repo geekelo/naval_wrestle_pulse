@@ -7,6 +7,7 @@ import DashboardLayout from './layouts/DashboardLayout.jsx'
 import Register from './pages/Register.jsx'
 import Registrations from './pages/Registrations.jsx'
 import Login from './pages/Login.jsx'
+import Schedule from './pages/Schedule.jsx'
 import EventCountdown from './pages/EventCountdown.jsx'
 
 const countdown = (title, subtitle) => (
@@ -27,7 +28,7 @@ const router = createBrowserRouter([
       { path: 'matches', element: countdown('Matches', 'Fixtures coming soon') },
       { path: 'teams', element: countdown('Teams', 'Registered teams coming soon') },
       { path: 'leaderboard', element: countdown('Leaderboard', 'Standings coming soon') },
-      { path: 'schedule', element: countdown('Schedule', 'Full schedule coming soon') },
+      { path: 'schedule', element: <Schedule /> },
       { path: 'officials', element: countdown('Officials', 'Officials coming soon') },
       { path: 'messages', element: countdown('Messages', 'Messages coming soon') },
     ],

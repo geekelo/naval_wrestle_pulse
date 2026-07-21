@@ -749,6 +749,161 @@
   font-size: 14px;
 }
 
+@media (max-width: 860px) {
+  .regs-card {
+    padding: 18px 14px;
+  }
+
+  .regs-table-wrap {
+    border: none;
+    overflow: visible;
+  }
+
+  .regs-table,
+  .regs-table thead,
+  .regs-table tbody,
+  .regs-table tr,
+  .regs-table th,
+  .regs-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .regs-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .regs-table tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .regs-table tr {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 12px 14px;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
+  }
+
+  .regs-table tr:hover {
+    background: #fff;
+  }
+
+  .regs-table td {
+    display: grid;
+    grid-template-columns: minmax(96px, 38%) 1fr;
+    gap: 10px;
+    align-items: start;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--line-soft);
+    white-space: normal;
+    word-break: break-word;
+  }
+
+  .regs-table td:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+  }
+
+  .regs-table td:first-child {
+    padding-top: 0;
+  }
+
+  .regs-table td::before {
+    content: attr(data-label);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .regs-cats {
+    max-width: none;
+    display: block;
+  }
+}
+
+/* ---------- Schedule ---------- */
+.sched-day-toggle {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+
+.sched-day-btn {
+  padding: 10px 14px;
+  border-radius: 999px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  font: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.sched-day-btn:hover {
+  background: #f8fafc;
+}
+
+.sched-day-btn.active {
+  background: var(--blue);
+  border-color: var(--blue);
+  color: #fff;
+}
+
+.sched-day {
+  display: block;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.sched-date {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.sched-time {
+  font-variant-numeric: tabular-nums;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.sched-table td[data-label='Event'] {
+  font-weight: 600;
+}
+
+@media (max-width: 860px) {
+  .sched-day-toggle {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .sched-day-btn {
+    width: 100%;
+    text-align: center;
+    border-radius: 10px;
+    padding: 11px 10px;
+    font-size: 12.5px;
+  }
+}
+
 .reg-scrim {
   display: none;
 }

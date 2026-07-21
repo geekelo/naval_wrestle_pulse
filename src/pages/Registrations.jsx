@@ -175,7 +175,7 @@ function Registrations() {
                       <table className="regs-table">
                         <thead>
                           <tr>
-                            <th>#</th>
+                            <th>ᗐ</th>
                             <th>Name</th>
                             <th>Country</th>
                             <th>Rank / Title</th>
@@ -189,15 +189,15 @@ function Registrations() {
                         <tbody>
                           {guests.map((g, index) => (
                             <tr key={g.id ?? `${g.full_name}-${index}`}>
-                              <td>{g.id ?? index + 1}</td>
-                              <td>{g.full_name || '—'}</td>
-                              <td>{g.country || '—'}</td>
-                              <td>{g.rank_title || '—'}</td>
-                              <td>{g.organization_unit || '—'}</td>
-                              <td>{g.appointment || '—'}</td>
-                              <td className="caps">{g.travel_mode || '—'}</td>
-                              <td>{yesNo(g.accommodation)}</td>
-                              <td>{formatDate(g.created_at)}</td>
+                              <td data-label="➠">{g.id ?? index + 1}</td>
+                              <td data-label="Name">{g.full_name || '—'}</td>
+                              <td data-label="Country">{g.country || '—'}</td>
+                              <td data-label="Rank / Title">{g.rank_title || '—'}</td>
+                              <td data-label="Organization">{g.organization_unit || '—'}</td>
+                              <td data-label="Appointment">{g.appointment || '—'}</td>
+                              <td data-label="Travel" className="caps">{g.travel_mode || '—'}</td>
+                              <td data-label="Stay">{yesNo(g.accommodation)}</td>
+                              <td data-label="Date">{formatDate(g.created_at)}</td>
                             </tr>
                           ))}
                         </tbody>
@@ -243,13 +243,13 @@ function Registrations() {
                         <tbody>
                           {teams.map((t, index) => (
                             <tr key={t.id ?? `${t.team_captain}-${index}`}>
-                              <td>{t.id ?? index + 1}</td>
-                              <td>{t.team_captain || '—'}</td>
-                              <td>{t.organization_unit || '—'}</td>
-                              <td>{t.male_count ?? '—'}</td>
-                              <td>{t.female_count ?? '—'}</td>
-                              <td>{t.total_count ?? '—'}</td>
-                              <td>
+                              <td data-label="#">{t.id ?? index + 1}</td>
+                              <td data-label="Captain">{t.team_captain || '—'}</td>
+                              <td data-label="Organization">{t.organization_unit || '—'}</td>
+                              <td data-label="Male">{t.male_count ?? '—'}</td>
+                              <td data-label="Female">{t.female_count ?? '—'}</td>
+                              <td data-label="Total">{t.total_count ?? '—'}</td>
+                              <td data-label="Categories">
                                 <span className="regs-cats">
                                   {formatCategories(
                                     t.female_categories,
@@ -257,9 +257,9 @@ function Registrations() {
                                   )}
                                 </span>
                               </td>
-                              <td className="caps">{t.travel_mode || '—'}</td>
-                              <td>{yesNo(t.accommodation)}</td>
-                              <td>{formatDate(t.created_at)}</td>
+                              <td data-label="Travel" className="caps">{t.travel_mode || '—'}</td>
+                              <td data-label="Stay">{yesNo(t.accommodation)}</td>
+                              <td data-label="Date">{formatDate(t.created_at)}</td>
                             </tr>
                           ))}
                         </tbody>
