@@ -51,3 +51,10 @@ export async function fetchGuestRegistrations() {
   })
   return normalizeList(data, ['guest_registrations', 'guests'])
 }
+
+export async function fetchTeamRegistrations() {
+  const data = await apiGet('/api/v1/team_registrations', {
+    token: getStoredToken(),
+  })
+  return normalizeList(data, ['team_registrations', 'teams'])
+}

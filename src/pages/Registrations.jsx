@@ -2,8 +2,10 @@ import { useEffect, useState } from 'react'
 import { useOutletContext } from 'react-router-dom'
 import { useAuth } from '../auth/AuthContext.jsx'
 import LoginForm from '../components/LoginForm.jsx'
-import { fetchGuestRegistrations } from '../api/registrations.js'
-import { DEMO_TEAMS } from '../data/demoRegistrations.js'
+import {
+  fetchGuestRegistrations,
+  fetchTeamRegistrations,
+} from '../api/registrations.js'
 import navyLogo from '../assets/nigerian-navy-logo.png'
 import eventLogo from '../assets/beach_wrestling_challenge_logo.png'
 import { icon } from '../icons.jsx'
@@ -27,41 +29,71 @@ function yesNo(value) {
   return value == null ? '—' : String(value)
 }
 
+function formatCategories(...lists) {
+  const values = lists.flatMap((list) => {
+    if (Array.isArray(list)) return list
+    if (typeof list === 'string' && list.trim()) return [list]
+    return []
+  })
+  return values.length ? values.join(', ') : '—'
+}
+
 function Registrations() {
   const { openNav } = useOutletContext()
   const { isAuthenticated } = useAuth()
   const [tab, setTab] = useState('guest') // 'guest' | 'team'
 
   const [guests, setGuests] = useState([])
-  const [loadingGuests, setLoadingGuests] = useState(false)
+  const [teams, setTeams] = useState([])
+  const [loading, setLoading] = useState(false)
   const [guestError, setGuestError] = useState(null)
+  const [teamError, setTeamError] = useState(null)
 
   useEffect(() => {
     if (!isAuthenticated) {
       setGuests([])
+      setTeams([])
       setGuestError(null)
+      setTeamError(null)
       return
     }
 
     let cancelled = false
 
-    async function loadGuests() {
-      setLoadingGuests(true)
+    async function loadRegistrations() {
+      setLoading(true)
       setGuestError(null)
-      try {
-        const list = await fetchGuestRegistrations()
-        if (!cancelled) setGuests(list)
-      } catch (err) {
-        if (!cancelled) {
-          setGuests([])
-          setGuestError(err.message || 'Unable to load guest registrations.')
-        }
-      } finally {
-        if (!cancelled) setLoadingGuests(false)
+      setTeamError(null)
+
+      const [guestResult, teamResult] = await Promise.allSettled([
+        fetchGuestRegistrations(),
+        fetchTeamRegistrations(),
+      ])
+
+      if (cancelled) return
+
+      if (guestResult.status === 'fulfilled') {
+        setGuests(guestResult.value)
+      } else {
+        setGuests([])
+        setGuestError(
+          guestResult.reason?.message || 'Unable to load guest registrations.',
+        )
       }
+
+      if (teamResult.status === 'fulfilled') {
+        setTeams(teamResult.value)
+      } else {
+        setTeams([])
+        setTeamError(
+          teamResult.reason?.message || 'Unable to load team registrations.',
+        )
+      }
+
+      setLoading(false)
     }
 
-    loadGuests()
+    loadRegistrations()
     return () => {
       cancelled = true
     }
@@ -108,14 +140,14 @@ function Registrations() {
                 className={`reg-type-btn${tab === 'guest' ? ' active' : ''}`}
                 onClick={() => setTab('guest')}
               >
-                {icon.group} Guests ({loadingGuests ? '…' : guests.length})
+                {icon.group} Guests ({loading ? '…' : guests.length})
               </button>
               <button
                 type="button"
                 className={`reg-type-btn${tab === 'team' ? ' active' : ''}`}
                 onClick={() => setTab('team')}
               >
-                {icon.teams} Teams ({DEMO_TEAMS.length})
+                {icon.teams} Teams ({loading ? '…' : teams.length})
               </button>
             </div>
 
@@ -134,7 +166,7 @@ function Registrations() {
                     <p className="reg-status err">{guestError}</p>
                   )}
 
-                  {loadingGuests ? (
+                  {loading ? (
                     <p className="regs-empty">Loading guest registrations…</p>
                   ) : guests.length === 0 && !guestError ? (
                     <p className="regs-empty">No guest registrations yet.</p>
@@ -179,47 +211,61 @@ function Registrations() {
                     <span className="reg-card-icon green">{icon.teams}</span>
                     <div>
                       <h2>TEAM REGISTRATIONS</h2>
-                      <p>Demo team list</p>
+                      <p>Live team list</p>
                     </div>
                   </div>
-                  <div className="regs-table-wrap">
-                    <table className="regs-table">
-                      <thead>
-                        <tr>
-                          <th>#</th>
-                          <th>Captain</th>
-                          <th>Organization</th>
-                          <th>Male</th>
-                          <th>Female</th>
-                          <th>Total</th>
-                          <th>Categories</th>
-                          <th>Travel</th>
-                          <th>Stay</th>
-                          <th>Date</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {DEMO_TEAMS.map((t) => (
-                          <tr key={t.id}>
-                            <td>{t.id}</td>
-                            <td>{t.team_captain}</td>
-                            <td>{t.organization_unit}</td>
-                            <td>{t.male_count}</td>
-                            <td>{t.female_count}</td>
-                            <td>{t.total_count}</td>
-                            <td>
-                              <span className="regs-cats">
-                                {[...t.female_categories, ...t.male_categories].join(', ')}
-                              </span>
-                            </td>
-                            <td className="caps">{t.travel_mode}</td>
-                            <td>{yesNo(t.accommodation)}</td>
-                            <td>{formatDate(t.created_at)}</td>
+
+                  {teamError && (
+                    <p className="reg-status err">{teamError}</p>
+                  )}
+
+                  {loading ? (
+                    <p className="regs-empty">Loading team registrations…</p>
+                  ) : teams.length === 0 && !teamError ? (
+                    <p className="regs-empty">No team registrations yet.</p>
+                  ) : teams.length > 0 ? (
+                    <div className="regs-table-wrap">
+                      <table className="regs-table">
+                        <thead>
+                          <tr>
+                            <th>#</th>
+                            <th>Captain</th>
+                            <th>Organization</th>
+                            <th>Male</th>
+                            <th>Female</th>
+                            <th>Total</th>
+                            <th>Categories</th>
+                            <th>Travel</th>
+                            <th>Stay</th>
+                            <th>Date</th>
                           </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                  </div>
+                        </thead>
+                        <tbody>
+                          {teams.map((t, index) => (
+                            <tr key={t.id ?? `${t.team_captain}-${index}`}>
+                              <td>{t.id ?? index + 1}</td>
+                              <td>{t.team_captain || '—'}</td>
+                              <td>{t.organization_unit || '—'}</td>
+                              <td>{t.male_count ?? '—'}</td>
+                              <td>{t.female_count ?? '—'}</td>
+                              <td>{t.total_count ?? '—'}</td>
+                              <td>
+                                <span className="regs-cats">
+                                  {formatCategories(
+                                    t.female_categories,
+                                    t.male_categories,
+                                  )}
+                                </span>
+                              </td>
+                              <td className="caps">{t.travel_mode || '—'}</td>
+                              <td>{yesNo(t.accommodation)}</td>
+                              <td>{formatDate(t.created_at)}</td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  ) : null}
                 </>
               )}
             </section>
