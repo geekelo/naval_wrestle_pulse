@@ -18,13 +18,20 @@
   --line: #e5e7eb;
   --line-soft: #eef1f5;
   --page: #f1f4f8;
+  --page-gradient: linear-gradient(
+    0deg,
+    #dbe8f8 0%,
+    #eef4fb 35%,
+    #f7f9fc 65%,
+    #c9daf0 100%
+  );
   --pink: #db2777;
 
   display: flex;
   min-height: 100svh;
   text-align: left;
   color: var(--ink);
-  background: var(--page);
+  background: var(--page-gradient);
   font-family: var(--sans);
   color-scheme: light;
 }
@@ -39,6 +46,7 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
+  background: transparent;
 }
 
 .reg-topbar {
@@ -153,6 +161,7 @@
 .reg-body {
   padding: 26px 32px;
   flex-grow: 1;
+  background: transparent;
 }
 
 .reg-hint {
