@@ -9,11 +9,11 @@ const NAV = [
   { label: 'Schedule', to: '/schedule', ic: icon.schedule },
   { label: 'Register', to: '/register', ic: icon.registration },
   { label: 'Registrations', to: '/registrations', ic: icon.list },
-  { label: 'Dashboard', to: '/dashboard', ic: icon.dashboard },
   { label: 'Matches', to: '/matches', ic: icon.matches },
-  { label: 'Teams', to: '/teams', ic: icon.teams },
   { label: 'Leaderboard', to: '/leaderboard', ic: icon.leaderboard },
-  { label: 'Officials', to: '/officials', ic: icon.officials },
+  // { label: 'Teams', to: '/teams', ic: icon.teams },
+  // { label: 'Officials', to: '/officials', ic: icon.officials },
+  // { label: 'Dashboard', to: '/dashboard', ic: icon.dashboard },
 ]
 
 function userInitials(user) {
