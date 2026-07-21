@@ -104,13 +104,13 @@ function Sidebar({ open = false, onNavigate }) {
         )}
       </div>
 
-      <div className="nwp-help">
+      {/* <div className="nwp-help">
         {icon.help}
         <div>
           <div className="nwp-help-title">Need Help?</div>
           <a className="nwp-help-link" href="#support">Contact Support</a>
         </div>
-      </div>
+      </div> */}
     </aside>
   )
 }
