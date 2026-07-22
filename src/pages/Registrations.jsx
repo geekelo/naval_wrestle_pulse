@@ -189,7 +189,7 @@ function Registrations() {
                         <tbody>
                           {guests.map((g, index) => (
                             <tr key={g.id ?? `${g.full_name}-${index}`}>
-                              <td data-label="➠">{g.id ?? index + 1}</td>
+                              <td data-label="#">{index + 1}</td>
                               <td data-label="Name">{g.full_name || '—'}</td>
                               <td data-label="Country">{g.country || '—'}</td>
                               <td data-label="Rank / Title">{g.rank_title || '—'}</td>
@@ -243,7 +243,7 @@ function Registrations() {
                         <tbody>
                           {teams.map((t, index) => (
                             <tr key={t.id ?? `${t.team_captain}-${index}`}>
-                              <td data-label="#">{t.id ?? index + 1}</td>
+                              <td data-label="#">{index + 1}</td>
                               <td data-label="Captain">{t.team_captain || '—'}</td>
                               <td data-label="Organization">{t.organization_unit || '—'}</td>
                               <td data-label="Male">{t.male_count ?? '—'}</td>
