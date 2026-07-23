@@ -9,7 +9,7 @@ const NAV = [
   { label: 'Schedule', to: '/schedule', ic: icon.schedule },
   { label: 'Register', to: '/register', ic: icon.registration },
   { label: 'Registrations', to: '/registrations', ic: icon.list },
-  { label: 'Match Fixtures', to: '/matches', ic: icon.matches },
+  { label: 'Match Fixtures', to: '/match-fixtures', ic: icon.matches },
   { label: 'Leaderboard', to: '/leaderboard', ic: icon.leaderboard },
   // { label: 'Teams', to: '/teams', ic: icon.teams },
   // { label: 'Officials', to: '/officials', ic: icon.officials },

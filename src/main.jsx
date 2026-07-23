@@ -8,6 +8,7 @@ import Register from './pages/Register.jsx'
 import Registrations from './pages/Registrations.jsx'
 import Login from './pages/Login.jsx'
 import Schedule from './pages/Schedule.jsx'
+import MatchFixtures from './pages/MatchFixtures.jsx'
 import EventCountdown from './pages/EventCountdown.jsx'
 
 const countdown = (title, subtitle) => (
@@ -25,7 +26,8 @@ const router = createBrowserRouter([
       { path: 'registerations', element: <Registrations /> },
       { path: 'login', element: <Login /> },
       { path: 'dashboard', element: countdown('Dashboard', 'Overview & event countdown') },
-      { path: 'matches', element: countdown('Matches', 'Fixtures coming soon') },
+      { path: 'match-fixtures', element: <MatchFixtures /> },
+      { path: 'matches', element: <MatchFixtures /> },
       { path: 'teams', element: countdown('Teams', 'Registered teams coming soon') },
       { path: 'leaderboard', element: countdown('Leaderboard', 'Standings coming soon') },
       { path: 'schedule', element: <Schedule /> },
