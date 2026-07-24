@@ -38,6 +38,9 @@ export const FEMALE_RESULTS = [
   { weight: '60kg', scores: { A: 3, C: 0 } },
   { weight: '70kg', scores: { A: 3, C: 0 } },
   { weight: '+70kg', scores: { A: 3, C: 0 } },
+  // Army vs Navy
+  { weight: '50kg', scores: { A: 3, B: 1 } },
+  { weight: '60kg', scores: { A: 3, B: 0 } },
 ]
 
 /** Male category results (Nordic pairings) */
@@ -51,6 +54,9 @@ export const MALE_RESULTS = [
   { weight: '80kg', scores: { A: 3, C: 2 } },
   { weight: '90kg', scores: { A: 3, C: 0 } },
   { weight: '+90kg', scores: { A: 2, C: 0 } },
+  // Army vs Navy
+  { weight: '80kg', scores: { A: 3, B: 0 } },
+  { weight: '+90kg', scores: { A: 3, B: 0 } },
 ]
 
 export function teamName(code) {
