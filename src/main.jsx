@@ -9,6 +9,7 @@ import Registrations from './pages/Registrations.jsx'
 import Login from './pages/Login.jsx'
 import Schedule from './pages/Schedule.jsx'
 import MatchFixtures from './pages/MatchFixtures.jsx'
+import Leaderboard from './pages/Leaderboard.jsx'
 import EventCountdown from './pages/EventCountdown.jsx'
 
 const countdown = (title, subtitle) => (
@@ -29,7 +30,7 @@ const router = createBrowserRouter([
       { path: 'match-fixtures', element: <MatchFixtures /> },
       { path: 'matches', element: <MatchFixtures /> },
       { path: 'teams', element: countdown('Teams', 'Registered teams coming soon') },
-      { path: 'leaderboard', element: countdown('Leaderboard', 'Standings coming soon') },
+      { path: 'leaderboard', element: <Leaderboard /> },
       { path: 'schedule', element: <Schedule /> },
       { path: 'officials', element: countdown('Officials', 'Officials coming soon') },
       { path: 'messages', element: countdown('Messages', 'Messages coming soon') },
