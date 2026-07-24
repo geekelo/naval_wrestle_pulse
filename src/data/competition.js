@@ -37,6 +37,7 @@ export const FEMALE_RESULTS = [
   { weight: '50kg', scores: { A: 3, C: 1 } },
   { weight: '60kg', scores: { A: 3, C: 0 } },
   { weight: '70kg', scores: { A: 3, C: 0 } },
+  { weight: '+70kg', scores: { A: 3, C: 0 } },
 ]
 
 /** Male category results (Nordic pairings) */
