@@ -7,6 +7,9 @@ import {
   FEMALE_RESULTS,
   MALE_RESULTS,
   teamName,
+  teamShort,
+  resultSides,
+  resultKey,
 } from '../data/competition.js'
 import navyLogo from '../assets/nigerian-navy-logo.png'
 import eventLogo from '../assets/beach_wrestling_challenge_logo.png'
@@ -15,24 +18,28 @@ import { icon } from '../icons.jsx'
 function ResultCards({ results }) {
   return (
     <div className="fx-results">
-      {results.map((r) => (
-        <div className="fx-result" key={r.weight}>
-          <div className="fx-result-weight">{r.weight}</div>
-          <div className="fx-result-score">
-            <span className="fx-side">
-              <span className="fx-code sm">B</span>
-              Navy
-              <strong>{r.scores.B}</strong>
-            </span>
-            <span className="fx-vs-label">–</span>
-            <span className="fx-side">
-              <span className="fx-code sm">C</span>
-              Air Force
-              <strong>{r.scores.C}</strong>
-            </span>
+      {results.map((r) => {
+        const sides = resultSides(r.scores)
+        if (!sides) return null
+        return (
+          <div className="fx-result" key={resultKey(r)}>
+            <div className="fx-result-weight">{r.weight}</div>
+            <div className="fx-result-score">
+              <span className="fx-side">
+                <span className="fx-code sm">{sides.left}</span>
+                {teamShort(sides.left)}
+                <strong>{sides.leftScore}</strong>
+              </span>
+              <span className="fx-vs-label">–</span>
+              <span className="fx-side">
+                <span className="fx-code sm">{sides.right}</span>
+                {teamShort(sides.right)}
+                <strong>{sides.rightScore}</strong>
+              </span>
+            </div>
           </div>
-        </div>
-      ))}
+        )
+      })}
     </div>
   )
 }
@@ -115,7 +122,7 @@ function MatchFixtures() {
             <span className="reg-card-icon green">{icon.leaderboard}</span>
             <div>
               <h2>FEMALE FIXTURES · RESULTS</h2>
-              <p>Navy vs Air Force · Thu 24 Jul 2026</p>
+              <p>Nordic pairings · Thu 24 Jul 2026</p>
             </div>
           </div>
           <ResultCards results={FEMALE_RESULTS} />

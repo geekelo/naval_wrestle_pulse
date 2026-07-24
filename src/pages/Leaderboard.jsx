@@ -5,6 +5,9 @@ import {
   MALE_RESULTS,
   buildStandings,
   teamShort,
+  resultSides,
+  resultKey,
+  resultWinner,
 } from '../data/competition.js'
 import navyLogo from '../assets/nigerian-navy-logo.png'
 import eventLogo from '../assets/beach_wrestling_challenge_logo.png'
@@ -144,17 +147,17 @@ function Leaderboard() {
               <span className="reg-card-icon blue">{icon.matches}</span>
               <div>
                 <h2>FEMALE CATEGORY RESULTS</h2>
-                <p>Navy vs Air Force</p>
+                <p>Nordic pairings</p>
               </div>
             </div>
 
             <div className="fx-results">
               {FEMALE_RESULTS.map((r) => {
-                const navy = r.scores.B
-                const air = r.scores.C
-                const winner = navy > air ? 'B' : air > navy ? 'C' : null
+                const sides = resultSides(r.scores)
+                if (!sides) return null
+                const winner = resultWinner(r.scores)
                 return (
-                  <div className="fx-result" key={r.weight}>
+                  <div className="fx-result" key={resultKey(r)}>
                     <div className="fx-result-weight">
                       {r.weight}
                       {winner && (
@@ -163,15 +166,15 @@ function Leaderboard() {
                     </div>
                     <div className="fx-result-score">
                       <span className="fx-side">
-                        <span className="fx-code sm">B</span>
-                        Navy
-                        <strong>{navy}</strong>
+                        <span className="fx-code sm">{sides.left}</span>
+                        {teamShort(sides.left)}
+                        <strong>{sides.leftScore}</strong>
                       </span>
                       <span className="fx-vs-label">–</span>
                       <span className="fx-side">
-                        <span className="fx-code sm">C</span>
-                        Air Force
-                        <strong>{air}</strong>
+                        <span className="fx-code sm">{sides.right}</span>
+                        {teamShort(sides.right)}
+                        <strong>{sides.rightScore}</strong>
                       </span>
                     </div>
                   </div>
@@ -187,17 +190,17 @@ function Leaderboard() {
               <span className="reg-card-icon green">{icon.matches}</span>
               <div>
                 <h2>MALE CATEGORY RESULTS</h2>
-                <p>Navy vs Air Force (NAF)</p>
+                <p>Nordic pairings</p>
               </div>
             </div>
 
             <div className="fx-results">
               {MALE_RESULTS.map((r) => {
-                const navy = r.scores.B
-                const air = r.scores.C
-                const winner = navy > air ? 'B' : air > navy ? 'C' : null
+                const sides = resultSides(r.scores)
+                if (!sides) return null
+                const winner = resultWinner(r.scores)
                 return (
-                  <div className="fx-result" key={r.weight}>
+                  <div className="fx-result" key={resultKey(r)}>
                     <div className="fx-result-weight">
                       {r.weight}
                       {winner && (
@@ -206,15 +209,15 @@ function Leaderboard() {
                     </div>
                     <div className="fx-result-score">
                       <span className="fx-side">
-                        <span className="fx-code sm">B</span>
-                        Navy
-                        <strong>{navy}</strong>
+                        <span className="fx-code sm">{sides.left}</span>
+                        {teamShort(sides.left)}
+                        <strong>{sides.leftScore}</strong>
                       </span>
                       <span className="fx-vs-label">–</span>
                       <span className="fx-side">
-                        <span className="fx-code sm">C</span>
-                        Air Force
-                        <strong>{air}</strong>
+                        <span className="fx-code sm">{sides.right}</span>
+                        {teamShort(sides.right)}
+                        <strong>{sides.rightScore}</strong>
                       </span>
                     </div>
                   </div>

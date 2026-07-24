@@ -26,12 +26,17 @@ export const FRIDAY_SESSIONS = [
   'Departure',
 ]
 
-/** Female category results: Navy (B) vs Air Force (C) */
+/** Female category results (Nordic pairings) */
 export const FEMALE_RESULTS = [
+  // Navy vs Air Force
   { weight: '50kg', scores: { B: 3, C: 1 } },
   { weight: '60kg', scores: { B: 3, C: 2 } },
   { weight: '70kg', scores: { B: 3, C: 2 } },
   { weight: '+70kg', scores: { B: 0, C: 3 } },
+  // Army vs Air Force
+  { weight: '50kg', scores: { A: 3, C: 1 } },
+  { weight: '60kg', scores: { A: 3, C: 0 } },
+  { weight: '70kg', scores: { A: 3, C: 0 } },
 ]
 
 /** Male category results: Navy (B) vs Air Force / NAF (C) */
@@ -48,6 +53,27 @@ export function teamName(code) {
 
 export function teamShort(code) {
   return TEAMS.find((t) => t.code === code)?.short || code
+}
+
+export function resultSides(scores) {
+  const entries = Object.entries(scores || {})
+  if (entries.length < 2) return null
+  const [[left, leftScore], [right, rightScore]] = entries
+  return { left, leftScore, right, rightScore }
+}
+
+export function resultKey(row) {
+  const sides = resultSides(row.scores)
+  if (!sides) return row.weight
+  return `${row.weight}-${sides.left}-${sides.right}`
+}
+
+export function resultWinner(scores) {
+  const sides = resultSides(scores)
+  if (!sides) return null
+  if (sides.leftScore > sides.rightScore) return sides.left
+  if (sides.rightScore > sides.leftScore) return sides.right
+  return null
 }
 
 /** Build overall standings from category results (wins + points for/against). */
