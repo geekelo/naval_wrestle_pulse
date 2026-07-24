@@ -7,11 +7,11 @@ import './Sidebar.css'
 
 const NAV = [
   { label: 'Live Stream', to: '/live', ic: icon.live },
-  { label: 'Schedule', to: '/schedule', ic: icon.schedule },
-  { label: 'Register', to: '/register', ic: icon.registration },
-  { label: 'Registrations', to: '/registrations', ic: icon.list },
-  { label: 'Match Fixtures', to: '/match-fixtures', ic: icon.matches },
   { label: 'Leaderboard', to: '/leaderboard', ic: icon.leaderboard },
+  { label: 'Match Fixtures', to: '/match-fixtures', ic: icon.matches },
+  { label: 'Schedule', to: '/schedule', ic: icon.schedule },
+  { label: 'Registrations', to: '/registrations', ic: icon.list },
+  { label: 'Register', to: '/register', ic: icon.registration },
   // { label: 'Teams', to: '/teams', ic: icon.teams },
   // { label: 'Officials', to: '/officials', ic: icon.officials },
   // { label: 'Dashboard', to: '/dashboard', ic: icon.dashboard },
