@@ -6,6 +6,7 @@ import { icon } from '../icons.jsx'
 import './Sidebar.css'
 
 const NAV = [
+  { label: 'Live Stream', to: '/live', ic: icon.live },
   { label: 'Schedule', to: '/schedule', ic: icon.schedule },
   { label: 'Register', to: '/register', ic: icon.registration },
   { label: 'Registrations', to: '/registrations', ic: icon.list },
