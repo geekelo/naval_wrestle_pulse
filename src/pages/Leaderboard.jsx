@@ -138,7 +138,7 @@ function Leaderboard() {
           )}
         </section>
 
-        {tab !== 'male' && (
+        {(tab === 'overall' || tab === 'female') && (
           <section className="reg-card">
             <div className="reg-card-head">
               <span className="reg-card-icon blue">{icon.matches}</span>
@@ -150,6 +150,49 @@ function Leaderboard() {
 
             <div className="fx-results">
               {FEMALE_RESULTS.map((r) => {
+                const navy = r.scores.B
+                const air = r.scores.C
+                const winner = navy > air ? 'B' : air > navy ? 'C' : null
+                return (
+                  <div className="fx-result" key={r.weight}>
+                    <div className="fx-result-weight">
+                      {r.weight}
+                      {winner && (
+                        <span className="lb-winner">Winner: {teamShort(winner)}</span>
+                      )}
+                    </div>
+                    <div className="fx-result-score">
+                      <span className="fx-side">
+                        <span className="fx-code sm">B</span>
+                        Navy
+                        <strong>{navy}</strong>
+                      </span>
+                      <span className="fx-vs-label">–</span>
+                      <span className="fx-side">
+                        <span className="fx-code sm">C</span>
+                        Air Force
+                        <strong>{air}</strong>
+                      </span>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </section>
+        )}
+
+        {(tab === 'overall' || tab === 'male') && MALE_RESULTS.length > 0 && (
+          <section className="reg-card">
+            <div className="reg-card-head">
+              <span className="reg-card-icon green">{icon.matches}</span>
+              <div>
+                <h2>MALE CATEGORY RESULTS</h2>
+                <p>Navy vs Air Force (NAF)</p>
+              </div>
+            </div>
+
+            <div className="fx-results">
+              {MALE_RESULTS.map((r) => {
                 const navy = r.scores.B
                 const air = r.scores.C
                 const winner = navy > air ? 'B' : air > navy ? 'C' : null

@@ -5,11 +5,37 @@ import {
   THURSDAY_SESSIONS,
   FRIDAY_SESSIONS,
   FEMALE_RESULTS,
+  MALE_RESULTS,
   teamName,
 } from '../data/competition.js'
 import navyLogo from '../assets/nigerian-navy-logo.png'
 import eventLogo from '../assets/beach_wrestling_challenge_logo.png'
 import { icon } from '../icons.jsx'
+
+function ResultCards({ results }) {
+  return (
+    <div className="fx-results">
+      {results.map((r) => (
+        <div className="fx-result" key={r.weight}>
+          <div className="fx-result-weight">{r.weight}</div>
+          <div className="fx-result-score">
+            <span className="fx-side">
+              <span className="fx-code sm">B</span>
+              Navy
+              <strong>{r.scores.B}</strong>
+            </span>
+            <span className="fx-vs-label">–</span>
+            <span className="fx-side">
+              <span className="fx-code sm">C</span>
+              Air Force
+              <strong>{r.scores.C}</strong>
+            </span>
+          </div>
+        </div>
+      ))}
+    </div>
+  )
+}
 
 function MatchFixtures() {
   const { openNav } = useOutletContext()
@@ -92,27 +118,18 @@ function MatchFixtures() {
               <p>Navy vs Air Force · Thu 24 Jul 2026</p>
             </div>
           </div>
+          <ResultCards results={FEMALE_RESULTS} />
+        </section>
 
-          <div className="fx-results">
-            {FEMALE_RESULTS.map((r) => (
-              <div className="fx-result" key={r.weight}>
-                <div className="fx-result-weight">{r.weight}</div>
-                <div className="fx-result-score">
-                  <span className="fx-side">
-                    <span className="fx-code sm">B</span>
-                    Navy
-                    <strong>{r.scores.B}</strong>
-                  </span>
-                  <span className="fx-vs-label">–</span>
-                  <span className="fx-side">
-                    <span className="fx-code sm">C</span>
-                    Air Force
-                    <strong>{r.scores.C}</strong>
-                  </span>
-                </div>
-              </div>
-            ))}
+        <section className="reg-card">
+          <div className="reg-card-head">
+            <span className="reg-card-icon blue">{icon.leaderboard}</span>
+            <div>
+              <h2>MALE FIXTURES · RESULTS</h2>
+              <p>Navy vs Air Force (NAF) · Thu 24 Jul 2026</p>
+            </div>
           </div>
+          <ResultCards results={MALE_RESULTS} />
         </section>
 
         <section className="reg-card fx-note-card">

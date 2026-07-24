@@ -31,9 +31,16 @@ export const FEMALE_RESULTS = [
   { weight: '50kg', scores: { B: 3, C: 1 } },
   { weight: '60kg', scores: { B: 3, C: 2 } },
   { weight: '70kg', scores: { B: 3, C: 2 } },
+  { weight: '+70kg', scores: { B: 0, C: 3 } },
 ]
 
-export const MALE_RESULTS = []
+/** Male category results: Navy (B) vs Air Force / NAF (C) */
+export const MALE_RESULTS = [
+  { weight: '70kg', scores: { B: 3, C: 0 } },
+  { weight: '80kg', scores: { B: 0, C: 3 } },
+  { weight: '90kg', scores: { B: 1, C: 3 } },
+  { weight: '+90kg', scores: { B: 0, C: 2 } },
+]
 
 export function teamName(code) {
   return TEAMS.find((t) => t.code === code)?.name || code
