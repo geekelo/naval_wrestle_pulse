@@ -1372,6 +1372,9 @@
 /* ---------- Live stream ---------- */
 .live-body {
   max-width: 1100px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 .live-card a {

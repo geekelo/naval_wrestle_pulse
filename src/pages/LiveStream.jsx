@@ -3,9 +3,24 @@ import navyLogo from '../assets/nigerian-navy-logo.png'
 import eventLogo from '../assets/beach_wrestling_challenge_logo.png'
 import { icon } from '../icons.jsx'
 
-const YOUTUBE_LIVE_ID = 'yg4_fuevp4o'
-const YOUTUBE_EMBED_SRC = `https://www.youtube.com/embed/${YOUTUBE_LIVE_ID}?autoplay=0&rel=0`
-const YOUTUBE_WATCH_URL = `https://youtube.com/live/${YOUTUBE_LIVE_ID}`
+const SESSIONS = [
+  {
+    id: 'UXuRKqq6QNM',
+    title: 'CDS BEACH WRESTLING · FIRST DAY * AFTERNOON SESSION',
+  },
+  {
+    id: 'yg4_fuevp4o',
+    title: 'CDS BEACH WRESTLING · FIRST DAY * MORNING SESSION',
+  },
+]
+
+function sessionEmbed(id) {
+  return `https://www.youtube.com/embed/${id}?autoplay=0&rel=0`
+}
+
+function sessionWatch(id) {
+  return `https://www.youtube.com/live/${id}`
+}
 
 function LiveStream() {
   const { openNav } = useOutletContext()
@@ -32,30 +47,32 @@ function LiveStream() {
       </header>
 
       <div className="reg-body live-body">
-        <section className="reg-card live-card">
-          <div className="reg-card-head">
-            <span className="reg-card-icon blue">{icon.live}</span>
-            <div>
-              <h2>CDS BEACH WRESTLING · LIVE</h2>
-              <p>
-                Stream on YouTube ·{' '}
-                <a href={YOUTUBE_WATCH_URL} target="_blank" rel="noreferrer">
-                  Open in YouTube
-                </a>
-              </p>
+        {SESSIONS.map((session) => (
+          <section className="reg-card live-card" key={session.id}>
+            <div className="reg-card-head">
+              <span className="reg-card-icon blue">{icon.live}</span>
+              <div>
+                <h2>{session.title}</h2>
+                <p>
+                  Stream on YouTube ·{' '}
+                  <a href={sessionWatch(session.id)} target="_blank" rel="noreferrer">
+                    Open in YouTube
+                  </a>
+                </p>
+              </div>
             </div>
-          </div>
 
-          <div className="live-player">
-            <iframe
-              src={YOUTUBE_EMBED_SRC}
-              title="CDS Beach Wrestling Live Stream"
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-              allowFullScreen
-              referrerPolicy="strict-origin-when-cross-origin"
-            />
-          </div>
-        </section>
+            <div className="live-player">
+              <iframe
+                src={sessionEmbed(session.id)}
+                title={session.title}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                allowFullScreen
+                referrerPolicy="strict-origin-when-cross-origin"
+              />
+            </div>
+          </section>
+        ))}
       </div>
     </div>
   )
