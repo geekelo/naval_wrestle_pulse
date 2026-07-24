@@ -1,39 +1,15 @@
 import { useOutletContext } from 'react-router-dom'
+import {
+  TEAMS,
+  FIXTURES,
+  THURSDAY_SESSIONS,
+  FRIDAY_SESSIONS,
+  FEMALE_RESULTS,
+  teamName,
+} from '../data/competition.js'
 import navyLogo from '../assets/nigerian-navy-logo.png'
 import eventLogo from '../assets/beach_wrestling_challenge_logo.png'
 import { icon } from '../icons.jsx'
-
-const TEAMS = [
-  { code: 'A', name: 'Nigerian Army' },
-  { code: 'B', name: 'Nigerian Navy' },
-  { code: 'C', name: 'Nigerian Air Force' },
-]
-
-const FIXTURES = [
-  { round: 1, match: 'B vs C', left: 'B', right: 'C' },
-  { round: 2, match: 'A vs B', left: 'A', right: 'B' },
-  { round: 3, match: 'C vs A', left: 'C', right: 'A' },
-]
-
-const THURSDAY = [
-  'R1 – Women Wrestling 50kg',
-  'R1 – Men Wrestling 70kg',
-  'R1 – Women Wrestling 60kg',
-  'R1 – Men Wrestling 80kg',
-  'R1 – Women Wrestling 70kg',
-  'R1 – Men Wrestling 90kg',
-  'R1 – Women Wrestling +70kg',
-  'R1 – Men Wrestling +90kg',
-]
-
-const FRIDAY = [
-  'Finals & Closing Ceremony',
-  'Departure',
-]
-
-function teamName(code) {
-  return TEAMS.find((t) => t.code === code)?.name || code
-}
 
 function MatchFixtures() {
   const { openNav } = useOutletContext()
@@ -108,6 +84,37 @@ function MatchFixtures() {
           </ol>
         </section>
 
+        <section className="reg-card">
+          <div className="reg-card-head">
+            <span className="reg-card-icon green">{icon.leaderboard}</span>
+            <div>
+              <h2>FEMALE FIXTURES · RESULTS</h2>
+              <p>Navy vs Air Force · Thu 24 Jul 2026</p>
+            </div>
+          </div>
+
+          <div className="fx-results">
+            {FEMALE_RESULTS.map((r) => (
+              <div className="fx-result" key={r.weight}>
+                <div className="fx-result-weight">{r.weight}</div>
+                <div className="fx-result-score">
+                  <span className="fx-side">
+                    <span className="fx-code sm">B</span>
+                    Navy
+                    <strong>{r.scores.B}</strong>
+                  </span>
+                  <span className="fx-vs-label">–</span>
+                  <span className="fx-side">
+                    <span className="fx-code sm">C</span>
+                    Air Force
+                    <strong>{r.scores.C}</strong>
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </section>
+
         <section className="reg-card fx-note-card">
           <div className="reg-card-head">
             <span className="reg-card-icon blue">{icon.info}</span>
@@ -139,7 +146,7 @@ function MatchFixtures() {
               </div>
             </div>
             <ul className="fx-session">
-              {THURSDAY.map((item) => (
+              {THURSDAY_SESSIONS.map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
@@ -154,7 +161,7 @@ function MatchFixtures() {
               </div>
             </div>
             <ul className="fx-session">
-              {FRIDAY.map((item) => (
+              {FRIDAY_SESSIONS.map((item) => (
                 <li key={item}>{item}</li>
               ))}
             </ul>
