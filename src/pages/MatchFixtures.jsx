@@ -133,7 +133,7 @@ function MatchFixtures() {
             <span className="reg-card-icon blue">{icon.leaderboard}</span>
             <div>
               <h2>MALE FIXTURES · RESULTS</h2>
-              <p>Navy vs Air Force (NAF) · Thu 24 Jul 2026</p>
+              <p>Nordic pairings · Thu 24 Jul 2026</p>
             </div>
           </div>
           <ResultCards results={MALE_RESULTS} />

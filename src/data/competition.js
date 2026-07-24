@@ -39,12 +39,17 @@ export const FEMALE_RESULTS = [
   { weight: '70kg', scores: { A: 3, C: 0 } },
 ]
 
-/** Male category results: Navy (B) vs Air Force / NAF (C) */
+/** Male category results (Nordic pairings) */
 export const MALE_RESULTS = [
+  // Navy vs Air Force
   { weight: '70kg', scores: { B: 3, C: 0 } },
   { weight: '80kg', scores: { B: 0, C: 3 } },
   { weight: '90kg', scores: { B: 1, C: 3 } },
   { weight: '+90kg', scores: { B: 0, C: 2 } },
+  // Army vs Air Force
+  { weight: '80kg', scores: { A: 3, C: 2 } },
+  { weight: '90kg', scores: { A: 3, C: 0 } },
+  { weight: '+90kg', scores: { A: 2, C: 0 } },
 ]
 
 export function teamName(code) {
