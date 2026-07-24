@@ -38,6 +38,12 @@ function formatCategories(...lists) {
   return values.length ? values.join(', ') : '—'
 }
 
+function teamPlayers(team) {
+  return Array.from({ length: 10 }, (_, i) => team[`player_${i + 1}`])
+    .map((name) => (typeof name === 'string' ? name.trim() : ''))
+    .filter(Boolean)
+}
+
 function Registrations() {
   const { openNav } = useOutletContext()
   const { isAuthenticated } = useAuth()
@@ -171,37 +177,47 @@ function Registrations() {
                   ) : guests.length === 0 && !guestError ? (
                     <p className="regs-empty">No guest registrations yet.</p>
                   ) : guests.length > 0 ? (
-                    <div className="regs-table-wrap">
-                      <table className="regs-table">
-                        <thead>
-                          <tr>
-                            <th>ᗐ</th>
-                            <th>Name</th>
-                            <th>Country</th>
-                            <th>Rank / Title</th>
-                            <th>Organization</th>
-                            <th>Appointment</th>
-                            <th>Travel</th>
-                            <th>Stay</th>
-                            <th>Date</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {guests.map((g, index) => (
-                            <tr key={g.id ?? `${g.full_name}-${index}`}>
-                              <td data-label="#">{index + 1}</td>
-                              <td data-label="Name">{g.full_name || '—'}</td>
-                              <td data-label="Country">{g.country || '—'}</td>
-                              <td data-label="Rank / Title">{g.rank_title || '—'}</td>
-                              <td data-label="Organization">{g.organization_unit || '—'}</td>
-                              <td data-label="Appointment">{g.appointment || '—'}</td>
-                              <td data-label="Travel" className="caps">{g.travel_mode || '—'}</td>
-                              <td data-label="Stay">{yesNo(g.accommodation)}</td>
-                              <td data-label="Date">{formatDate(g.created_at)}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                    <div className="team-regs-list">
+                      {guests.map((g, index) => (
+                        <article
+                          className="team-reg-card"
+                          key={g.id ?? `${g.full_name}-${index}`}
+                        >
+                          <div className="team-reg-top">
+                            <span className="team-reg-index">{index + 1}</span>
+                            <div className="team-reg-meta">
+                              <h3>{g.full_name || 'Guest'}</h3>
+                              <p>
+                                {g.rank_title || '—'}
+                                {g.country ? ` · ${g.country}` : ''}
+                              </p>
+                            </div>
+                          </div>
+
+                          <div className="team-reg-stats guest-reg-stats">
+                            <div>
+                              <span>Organization</span>
+                              <strong>{g.organization_unit || '—'}</strong>
+                            </div>
+                            <div>
+                              <span>Appointment</span>
+                              <strong>{g.appointment || '—'}</strong>
+                            </div>
+                            <div>
+                              <span>Travel</span>
+                              <strong className="caps">{g.travel_mode || '—'}</strong>
+                            </div>
+                            <div>
+                              <span>Stay</span>
+                              <strong>{yesNo(g.accommodation)}</strong>
+                            </div>
+                            <div>
+                              <span>Date</span>
+                              <strong>{formatDate(g.created_at)}</strong>
+                            </div>
+                          </div>
+                        </article>
+                      ))}
                     </div>
                   ) : null}
                 </>
@@ -224,46 +240,79 @@ function Registrations() {
                   ) : teams.length === 0 && !teamError ? (
                     <p className="regs-empty">No team registrations yet.</p>
                   ) : teams.length > 0 ? (
-                    <div className="regs-table-wrap">
-                      <table className="regs-table">
-                        <thead>
-                          <tr>
-                            <th>#</th>
-                            <th>Captain</th>
-                            <th>Organization</th>
-                            <th>Male</th>
-                            <th>Female</th>
-                            <th>Total</th>
-                            <th>Categories</th>
-                            <th>Travel</th>
-                            <th>Stay</th>
-                            <th>Date</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {teams.map((t, index) => (
-                            <tr key={t.id ?? `${t.team_captain}-${index}`}>
-                              <td data-label="#">{index + 1}</td>
-                              <td data-label="Captain">{t.team_captain || '—'}</td>
-                              <td data-label="Organization">{t.organization_unit || '—'}</td>
-                              <td data-label="Male">{t.male_count ?? '—'}</td>
-                              <td data-label="Female">{t.female_count ?? '—'}</td>
-                              <td data-label="Total">{t.total_count ?? '—'}</td>
-                              <td data-label="Categories">
-                                <span className="regs-cats">
-                                  {formatCategories(
-                                    t.female_categories,
-                                    t.male_categories,
-                                  )}
-                                </span>
-                              </td>
-                              <td data-label="Travel" className="caps">{t.travel_mode || '—'}</td>
-                              <td data-label="Stay">{yesNo(t.accommodation)}</td>
-                              <td data-label="Date">{formatDate(t.created_at)}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                    <div className="team-regs-list">
+                      {teams.map((t, index) => {
+                        const players = teamPlayers(t)
+                        return (
+                          <article
+                            className="team-reg-card"
+                            key={t.id ?? `${t.team_captain}-${index}`}
+                          >
+                            <div className="team-reg-top">
+                              <span className="team-reg-index">{index + 1}</span>
+                              <div className="team-reg-meta">
+                                <h3>{t.organization_unit || 'Team'}</h3>
+                                <p>
+                                  Captain: <strong>{t.team_captain || '—'}</strong>
+                                </p>
+                              </div>
+                            </div>
+
+                            <div className="team-reg-stats">
+                              <div>
+                                <span>Male</span>
+                                <strong>{t.male_count ?? '—'}</strong>
+                              </div>
+                              <div>
+                                <span>Female</span>
+                                <strong>{t.female_count ?? '—'}</strong>
+                              </div>
+                              <div>
+                                <span>Total</span>
+                                <strong>{t.total_count ?? '—'}</strong>
+                              </div>
+                              <div>
+                                <span>Travel</span>
+                                <strong className="caps">{t.travel_mode || '—'}</strong>
+                              </div>
+                              <div>
+                                <span>Stay</span>
+                                <strong>{yesNo(t.accommodation)}</strong>
+                              </div>
+                              <div>
+                                <span>Date</span>
+                                <strong>{formatDate(t.created_at)}</strong>
+                              </div>
+                            </div>
+
+                            <div className="team-reg-cats">
+                              <span>Categories</span>
+                              <p>
+                                {formatCategories(
+                                  t.female_categories,
+                                  t.male_categories,
+                                )}
+                              </p>
+                            </div>
+
+                            <div className="team-reg-players">
+                              <h4>Players ({players.length})</h4>
+                              {players.length === 0 ? (
+                                <p className="regs-empty">No player names provided.</p>
+                              ) : (
+                                <ol>
+                                  {players.map((name, i) => (
+                                    <li key={`${t.id || index}-p${i}`}>
+                                      <span className="player-no">{i + 1}</span>
+                                      <span className="player-name">{name}</span>
+                                    </li>
+                                  ))}
+                                </ol>
+                              )}
+                            </div>
+                          </article>
+                        )
+                      })}
                     </div>
                   ) : null}
                 </>

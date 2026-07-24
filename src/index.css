@@ -27,7 +27,12 @@
 
   @media (max-width: 1024px) {
     font-size: 16px;
+    overflow-x: hidden;
   }
+}
+
+body {
+  overflow-x: hidden;
 }
 
 @media (prefers-color-scheme: dark) {
