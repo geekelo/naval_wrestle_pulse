@@ -5,6 +5,10 @@ import { icon } from '../icons.jsx'
 
 const SESSIONS = [
   {
+    id: 'UXknzd3YGi8',
+    title: 'CDS BEACH WRESTLING · SECOND DAY | FINALS',
+  },
+  {
     id: 'UXuRKqq6QNM',
     title: 'CDS BEACH WRESTLING · FIRST DAY * AFTERNOON SESSION',
   },
